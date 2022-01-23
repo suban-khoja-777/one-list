@@ -1,0 +1,29 @@
+@font-face {
+	font-family: bold;
+	src: url('/fonts/Asap-Bold.ttf');
+	/* src: url('./fonts/Poppins-Light.ttf'); */
+  }
+  
+  @font-face {
+	font-family: normal;
+	src: url('/fonts/Asap-Regular.ttf');
+	/* src: url('./fonts/Poppins-Black.ttf'); */
+  }
+  
+  /* 
+	  Theme Site : https://themeforest.net/search/chat
+  */
+  
+  *{
+	  font-family : normal;
+	  font-size: 16px;
+	  --primary-color : #1c1d1f;
+	  --secondary-color : #f48668;
+  }
+  
+  /* Element Level Styles - Start */
+  
+body {
+	margin:0;
+	font-family : normal;
+}
