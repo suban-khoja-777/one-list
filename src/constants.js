@@ -2,7 +2,7 @@
 export const APP_NAME = 'onelist';
 
 const API = {
-    BASE_ENDPOINT : 'https://onelist-001-developer-edition.ap27.force.com/services/apexrest/api/',
+    BASE_ENDPOINT : 'https://onelist-001-developer-edition.ap27.force.com/services/apexrest/api/v1/',
     ENDPOINTS : {
         "getUserTasks" : 'getUserTasks',
         "updateTaskStatus" : "updateTaskStatus",
