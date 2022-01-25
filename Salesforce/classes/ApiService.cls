@@ -1,4 +1,4 @@
-@RestResource(urlMapping='/api/*')
+@RestResource(urlMapping='/api/v1/*')
 global with sharing class ApiService{
   @HttpPost
   global static void doPost() {
@@ -9,7 +9,7 @@ global with sharing class ApiService{
     if(request.requestBody != null && String.isNotBlank(request.requestBody.toString())){
       requestBody = (Map<String, Object>) JSON.deserializeUntyped(request.requestBody.toString());
     }
-    String apiName = request.requestURI.substringAfter( '/api/' );
+    String apiName = request.requestURI.substringAfter( '/api/v1/' );
     
     switch on apiName {
       when 'getUserTasks' {
