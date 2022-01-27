@@ -1,10 +1,9 @@
 <script>
-	import { AUTH , signoutUser } from "./firebase";
+	import { AUTH } from "./firebase";
 	import LoginPage from "./Pages/LoginPage.svelte";
 	import AppPage from "./Pages/AppPage.svelte";
 	import LoadSpinner from "./utility/LoadSpinner.svelte";
 	import ProcessSpinner from "./utility/ProcessSpinner.svelte";
-	
     import {registerListener , EVENTS} from './EventManager';
 	import { onMount } from "svelte";
 

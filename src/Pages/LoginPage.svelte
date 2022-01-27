@@ -1,13 +1,22 @@
 <script>
     import { signinUser } from "../firebase";
     import {fireEvent,EVENTS} from "../EventManager";
-    import {APP_NAME } from '../constants';
     import Button from "../utility/Button.svelte";
     import Input from "../utility/Input.svelte";
 
     let user = {
         email:"",
         name:""
+    }
+
+    let showLogin = false;
+
+    const showLoginPage = () => {
+        showLogin = true;
+    }
+
+    const hideLoginPage = () => {
+        showLogin = false;
     }
 
     const handleChange = (e) => {
@@ -39,76 +48,104 @@
         margin: 0;
         padding: 0;
         height: 100vh;
-        background-color: var(--primary-color);
     }
 
     .app-header{
-        background-color: var(--primary-color);
-        padding: 0.5em;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        padding: 1.5em 1em;
     }
 
     .app-name {
-        color: white;
         font-family: normal;
-        display: flex;
-        align-items: center;
-        font-weight: 600;
-        font-size: 1em;
+        font-size: 1.75em;
     }
 
     .logo {
-        width: 1.8em;
-        height: 1.8em;
+        width: 3.8em;
         margin: 0 5px;
     }
 
     .form-container{
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        padding: 1em 0em;
-        width: 100vw;
-        height: 75vh;
+        height: 100vh;
+    }
+
+    .tagline{
+        font-size: 2.5rem;
+        margin: 0;
     }
 
     .form {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        box-shadow: var(--secondary-color) 0 25px 50px -15px !important;
-        padding: 1em;
-        width: 25vw;
+        padding: 3rem;
+        width: 25%;
     }
 
-    .dev-name{
-        box-shadow: white 0 25px 50px -15px !important;
-        padding: 1em;
-        color: white;
-        border-radius: 50px;
+    .highlight{
+        color: var(--dark-color);
     }
+
+    .home{
+        width: 50%;
+        height: 50%;
+    }
+
+    .form{
+        width: 100%;
+        height: 100%;
+    }
+
+    .sub-container{
+        box-shadow: rgb(0 0 0 / 70%) 0 25px 50px -15px !important;
+        width: 70%;
+    }
+
 </style>
 
-<div class="container">
+<div class="flex flex-column container bg-secondary">
     
-    <header class="app-header">
-        <span class="app-name">
-            <img class="logo" src="./logo.svg" alt="oneList"/>
-            {APP_NAME}
-        </span>
-        <span class="dev-name">Suban Khoja</span>
-    </header>
-    
-    <div class="form-container login-form">
-        <div class="form">
-            <Input name="email" type="email" label="Email" hasLabel onChange={handleChange}/>
-            <Input name="password" type="password" label="Password" hasLabel onChange={handleChange}/>
-            <br/>
-            <Button onClick={onSignIn} label="Login" type="secondary"/>
+    {#if showLogin}
+        <div class="form-container flex justify-center flex-row align-center login-form">
+            <div class="sub-container flex justify-center flex-row bg-white">
+                <div class="form bg-dark flex justify-center bg-white">
+                    <img class="form" src="./login-form.svg" alt="oneList"/>
+                </div>
+                <!-- <div class="line"></div> -->
+                <div class="form form-right flex justify-center flex-column bg-white">
+                    <span class="app-name flex align-center justify-center text-bold text-primary">
+                        onelist
+                    </span>
+                    <br/>
+                    <Input name="email" type="email" label="Email" hasLabel onChange={handleChange}/>
+                    <br/>
+                    <Input name="password" type="password" label="Password" hasLabel onChange={handleChange}/>
+                    <br/>
+                    <Button onClick={onSignIn} label="Login" type="primary"/>
+                    <br/>
+                    <br/>
+                    <Button onClick={hideLoginPage} label="Return to home" type="link"/>
+                </div>
+            </div>
         </div>
-    </div>
-       
+        {:else}
+        <header class="app-header flex justify-space-between align-center bg-secondary">
+            <span class="app-name flex align-center text-bold text-primary">
+                <img class="logo" src="./logo.svg" alt="oneList"/>
+            </span>
+            <Button onClick={showLoginPage} label="Login" type="link"/>
+            
+        </header>
+        
+        <div class="flex justify-center flex-row align-center grow">
+            <div class="flex justify-center flex-column align-center tagline-container">
+                <h1 class="tagline">Manage your task better with </h1>
+                <h1 class="tagline highlight text-underline">onelist</h1>
+            </div>
+            <div class="flex justify-center flex-column align-center tagline-container">
+                <img class="home" src="./login.svg" alt="oneList"/>    
+            </div>
+        </div>
+
+        <footer class="app-header flex justify-end align-center bg-secondary">
+            <span class="dev-name text-bold highlight text-underline">Suban Khoja</span>
+        </footer>
+    {/if}
+    
 </div>

@@ -7,29 +7,28 @@
 </script>
 
 
-<button data-type={type} on:click={onClick}>{label}</button>
+<button class="pointer text-bold" data-type={type} on:click={onClick}>{label}</button>
 
 <style>
     button{
         border: none;
         outline: none;
         padding : 10px;
-        border-radius: 3px;
-        cursor: pointer;
-        color: white;
-        font-weight: 600;
     }
 
     button[data-type="primary"]{
         background-color: var(--primary-color);
+        color: white;
+        border : 2px solid var(--primary-color);
     }
 
     button[data-type="secondary"]{
         background-color: var(--secondary-color);
+        border : 2px solid var(--primary-color);
     }
 
     button[data-type="link"]{
-        color: var(--secondary-color);
+        color: var(--primary-color);
         text-decoration: underline;
         font-weight: 600;
         padding: 0;

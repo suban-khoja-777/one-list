@@ -1,12 +1,13 @@
 <script>
     import { onMount } from "svelte";
-    import {getUserTasks , updateTaskStatus , deleteTask , createTask , updateTaskTitleAndNote} from '../api';
+    import {getUserTasks , updateTask , deleteTask , createTask } from '../api';
     import { AUTH , signoutUser} from "../firebase";
     import Input from "../utility/Input.svelte";
     import {registerListener , EVENTS, fireEvent} from '../EventManager';
     import Button from "../utility/Button.svelte";
     import Popup from "../utility/Popup.svelte";
     import Task from "../Task.svelte";
+    import { columns } from "../constants";
     let store = [];
 
     let new_task_name;
@@ -16,13 +17,13 @@
         new_task_name = e.target.value;
     }
 
-    const handleTaskNameChange = (e) => {
-        selected_task.content = e.target.value;
+    const handleTaskChange = (e) => {
+        selected_task[e.target.dataset.field] = e.target.value;
     }
 
     onMount( () => {
 
-        registerListener(EVENTS.UPDATE_STATUS,processUpdateStatus);
+        registerListener(EVENTS.UPDATE_TASK,processUpdateTask);
         registerListener(EVENTS.DELETE_TASK,processDeleteTask);
         registerListener(EVENTS.OPEN_TASK_DETAIL,processOpenTaskDetail);
         registerListener(EVENTS.CLOSE_POPUP,processCloseTaskDetail);
@@ -34,6 +35,21 @@
         .then(res => {
             if(res && res.nodes && res.nodes.length){
                 store = res.nodes;
+                for(let i=0;i<store.length;i++){
+                    if(store[i].note){
+                        const json = JSON.parse(store[i].note);
+                        store[i]['task_start_date'] = json.task_start_date;
+                        store[i]['task_end_date'] = json.task_end_date;
+                        store[i]['task_note'] = json.task_note;
+                        store[i]['task_status'] = json.task_status;
+                        store[i]['task_name'] = store[i].content;
+                        store[i]['task_id'] = store[i].id;
+                        delete store[i].note;
+                        delete store[i].checked;
+                        delete store[i].content;
+                        delete store[i].id;
+                    }
+                }
                 fireEvent(EVENTS.HIDE_SPINNER,{});
             }else{
                 fireEvent(EVENTS.HIDE_SPINNER,{});
@@ -44,29 +60,43 @@
         })
     });
 
-    const processDeleteTask = (data) => {
-        deleteTask(AUTH.currentUser.uid,data.task_id);
-        store = store.filter(task => task.id !== data.task_id);
+    const processDeleteTask = () => {
+        deleteTask(AUTH.currentUser.uid,selected_task.task_id);
+        store = store.filter(task => task.task_id !== selected_task.task_id);
+        processCloseTaskDetail();
     }
 
-    const processUpdateStatus = (data) => {
-        for(let i=0;i<store.length;i++){
-            if(store[i].id === data.task_id){
-                store[i].checked = data.task_status;
-            }
+    const processUpdateTask = (data) => {
+        const _note = {
+            task_start_date : data.task_start_date ? data.task_start_date : "",
+            task_end_date : data.task_end_date ? data.task_end_date : "",
+            task_note : data.task_note ? data.task_note : "",
+            task_status : data.task_status ? data.task_status : "",
         }
-        updateTaskStatus(AUTH.currentUser.uid,data.task_id,data.task_status);
+        updateTask(AUTH.currentUser.uid,data.task_id,data.task_name,JSON.stringify(_note));
     }
 
     const handleCreateTask = (evt) => {
         if(evt.key === "Enter" && new_task_name){
             fireEvent(EVENTS.SHOW_SPINNER,{});
-            createTask(AUTH.currentUser.uid,new_task_name)
+            createTask(
+                AUTH.currentUser.uid,
+                new_task_name,
+                JSON.stringify({
+                    task_start_date : "",
+                    task_end_date : "",
+                    task_note : "",
+                    task_status : "Not Started"
+                })
+            )
             .then(res => {
                 store.push({
-                    id:res.new_node_ids[0],
-                    checked:false,
-                    content : new_task_name,
+                    task_id:res.new_node_ids[0],
+                    task_name : new_task_name,
+                    task_start_date : "",
+                    task_end_date : "",
+                    task_note : "",
+                    task_status : "Not Started"
                 });
                 new_task_name = "";
                 store = store;
@@ -79,8 +109,7 @@
     }
 
     const processOpenTaskDetail = (task_id) => {
-        selected_task = store.filter(task => task.id === task_id)[0];
-        console.log(selected_task);
+        selected_task = store.filter(task => task.task_id === task_id)[0];
     }
 
     const processCloseTaskDetail = () => {
@@ -89,15 +118,15 @@
 
     const saveTaskTitleAndNote = () => {
         fireEvent(EVENTS.SHOW_SPINNER,{});
-        updateTaskTitleAndNote(AUTH.currentUser.uid,selected_task.id,selected_task.content,selected_task.note)
+        const _note = {
+            task_start_date : selected_task.task_start_date ? selected_task.task_start_date : "",
+            task_end_date : selected_task.task_end_date ? selected_task.task_end_date : "",
+            task_note : selected_task.task_note ? selected_task.task_note : "",
+            task_status : selected_task.task_status ? selected_task.task_status : ""
+        }
+        updateTask(AUTH.currentUser.uid,selected_task.task_id,selected_task.task_name,JSON.stringify(_note))
         .then(res => {
             fireEvent(EVENTS.HIDE_SPINNER,{});
-            for(let i=0;i<store.length;i++){
-                if(store[i].id === selected_task.id){
-                    store[i].note = selected_task.note;
-                    store[i].content = selected_task.content;
-                }
-            }
         })
         .catch(err => {
             fireEvent(EVENTS.HIDE_SPINNER,{});
@@ -106,55 +135,102 @@
 
 </script>
 
-<div class="app-container">
-    <header>
-            <div class="input-container">
-                <Input width_class="width-half" name="search" type="text" placeholder="Type your task here. Press enter to create" onChange={handleChange} onKeyUp={handleCreateTask} value={new_task_name}/>
-            </div>
-            <div class="action-container">
-                <Button onClick={signoutUser} label="Sign out" type="secondary"/>
-            </div>
+<div class="app-container flex align-center flex-column">
+    <header class="flex align-center justify-center">
+        <div class="logo-container text-center">
+            <img class="logo" src="./logo.svg" alt="onelist"/>
+        </div>
+        
+        <div class="input-container flex justify-center">
+            <Input width_class="width-half" name="search" type="text" placeholder="Type your task here. Press enter to create" onChange={handleChange} onKeyUp={handleCreateTask} value={new_task_name}/>
+        </div>
+
+        <div class="action-container text-center">
+            <Button onClick={signoutUser} label="Sign out" type="link"/>
+        </div>
+
     </header>
     {#if store && store.length}
-        <div class="task-container">
+        <div class="task-container flex justify-start align-center grow flex-column">
+            <li class="columns flex justify-space-between align-center bg-dark text-white text-bold">
+                {#each columns as column}
+                    {#if column.show_in_list}
+                        <span class="column flex justify-center grow border-box text-bold {column.key}">{column.label}</span>    
+                    {/if}
+                {/each}
+            </li>
             {#each store as task}
-                <Task task_name={task.content} task_id={task.id} task_status={task.checked} />    
+                <Task {task} />    
             {/each}
         </div>
     {/if}
 </div>
 
 {#if selected_task}
-    <Popup header={selected_task.content} data={selected_task}>
+    <Popup header={selected_task.task_name} data={selected_task}>
         <br/>
         <br/>
-        <div>
-            <label for="task-name">Name</label>
-        </div>
-        <Input width_class="width-full" name="task-name" type="text" onChange={handleTaskNameChange} value={selected_task.content}/>
-        <br/>
-        <br/>
-        <label for="task-note">Additional Notes</label>
-        <textarea name="task-note" class="task-note" rows="10" bind:value={selected_task.note}></textarea>
+        {#each columns as column}
+            {#if column.show_in_detail}
+                <Input width_class="width-full" hasLabel label={column.label} type={column.field_type} onChange={handleTaskChange} value={selected_task[column.key]} data_field={column.key}/>
+                <br/>
+                <br/>  
+            {/if}
+        {/each}
         <Button onClick={saveTaskTitleAndNote} label="Save" type="secondary"/>
+        <div class="flex align-center justify-center">
+            <Button onClick={processDeleteTask} label="Delete" type="link"/>
+        </div>        
     </Popup>
 {/if}
 
 <style>
+
+    .logo {
+        width: 4.8em;
+    }
+
+    .columns{
+        width: 100%;
+        list-style: none;
+    }
+
+    .column{
+        padding: 0.5rem;
+    }
+
+    .task_name{
+        width: 60%;
+    }
+
+    .task_start_date,.task_end_date{
+        width: 15%;
+    }
+
+    .task_status{
+        width: 10%;
+    }
+
+    .column:first-of-type{
+        border-left: 0;
+    }
+
+    .column:last-of-type{
+        border-right: 0;
+    }
+
     .app-container{
-        display: flex;
-        align-items: center;
-        flex-direction: column;
         margin:0;
         padding: 0;
         height: 100vh;
-        background-color: var(--primary-color);
+    }
+
+    .logo-container{
+        width: 10%;
     }
 
     .input-container{
-        width: 90%;
-        display: flex;
-        justify-content: center;
+        width: 80%;
     }
 
     .action-container{
@@ -162,37 +238,16 @@
     }
 
     .task-container{
-        display: flex;
-        width: 100vw;
-        justify-content: flex-start;
-        align-items: center;
-        flex-grow: 1;
-        flex-direction: column;
+        width: 95vw;
     }
 
     header{
         width: 100vw;
-        align-items: center;
-        justify-content: center;
-        display: flex;
         padding: 1em 0;
     }
 
     .task-note{
         width: 100%;
-        background-color: var(--primary-color);
-        border :  1px solid gray;
-        color: white;
-        box-sizing: border-box;
     }
-
-    label {
-        color: white;
-        font-family: normal;
-        padding: 1px 3px;
-        background-color: var(--secondary-color);
-        margin: 2em 0;
-    }
-
 
 </style>

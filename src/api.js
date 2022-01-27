@@ -13,12 +13,13 @@ export const getUserTasks = (user_id) => {
     });
 };
 
-export const createTask = (user_id,task_name) => {
+export const createTask = (user_id,task_name,note) => {
     return fetch(API.BASE_ENDPOINT+API.ENDPOINTS.createTask,{
         method : 'POST',
         body : JSON.stringify({
             user_id,
-            content : task_name
+            content : task_name,
+            note
         })
     }).then(res => res.json())
     .catch(err => {
@@ -39,22 +40,8 @@ export const deleteTask = (user_id,node_id) => {
     });
 };
 
-export const updateTaskStatus = (user_id,node_id,checked) => {
-    return fetch(API.BASE_ENDPOINT+API.ENDPOINTS.updateTaskStatus,{
-        method : 'POST',
-        body : JSON.stringify({
-            user_id,
-            node_id,
-            checked
-        })
-    }).then(res => res.json())
-    .catch(err => {
-        console.error('updateTaskStatus : ',err);
-    });
-};
-
-export const updateTaskTitleAndNote = (user_id,node_id,content,note) => {
-    return fetch(API.BASE_ENDPOINT+API.ENDPOINTS.updateTaskTitleAndNote,{
+export const updateTask = (user_id,node_id,content,note) => {
+    return fetch(API.BASE_ENDPOINT+API.ENDPOINTS.updateTask,{
         method : 'POST',
         body : JSON.stringify({
             user_id,
@@ -64,6 +51,6 @@ export const updateTaskTitleAndNote = (user_id,node_id,content,note) => {
         })
     }).then(res => res.json())
     .catch(err => {
-        console.error('updateTaskTitleAndNote : ',err);
+        console.error('updateTask : ',err);
     });
 };

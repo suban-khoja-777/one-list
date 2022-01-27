@@ -1,90 +1,52 @@
 <script>
 
     import { fireEvent, EVENTS } from "./EventManager";
-    import Button from "./utility/Button.svelte";
-    export let task_name;
-    export let task_id;
-    export let task_status;
+    import { statuses , columns } from "./constants";
+    import Input from "./utility/Input.svelte";
+    export let task;
+    
+    let updated_task = {...task};
 
-    const sendUpdateStatusEvent = (_evt) => {
-        fireEvent(EVENTS.UPDATE_STATUS,{
-            task_id,
-            task_status : _evt.target.checked
-        });
-    }
-
-    const sendDeleteEvent = () => {
-        const sure = confirm('Are you sure?');
-        sure &&
-        fireEvent(EVENTS.DELETE_TASK,{
-            task_id
-        });
+    const handleChange = (e) => {
+        updated_task[e.target.dataset.field] = e.target.value;
+        fireEvent(EVENTS.UPDATE_TASK,updated_task);
     }
 
     const sendOpenTaskDetailEvent = () => {
-        fireEvent(EVENTS.OPEN_TASK_DETAIL,task_id);
+        fireEvent(EVENTS.OPEN_TASK_DETAIL,updated_task.task_id);
     }
-
+    
 </script>
 
-<li class="task" id={task_id} >
-    <div class="data-container">
-        <input type="checkbox" on:change={sendUpdateStatusEvent} checked={task_status}/>
-        <span class="task-label">{task_name}</span>
-    </div>
-    <div class="action-container">
-        <Button onClick={sendDeleteEvent} label="delete" type="link"/>&nbsp;|&nbsp; 
-        <Button onClick={sendOpenTaskDetailEvent} label="open" type="link"/>
-    </div>
-    
+<li class="columns text-primary flex justify-space-between align-center border-box">
+    {#each columns as column}
+        {#if column.show_in_list}
+            <span class="column flex justify-center border-box text-bold pointer {column.key}">
+                {#if column.allow_inline_edit}
+                    {#if column.field_type !== 'select'}
+                        <Input type={column.field_type} classes="bg-transparent" value={task[column.key]} onChange={handleChange} data_field={column.key} />
+                        {:else}
+                        <Input type={column.field_type} classes="bg-transparent" value={task[column.key]} onChange={handleChange} data_field={column.key} options={statuses}/>
+                    {/if}
+                    {:else}
+                    <span on:click={sendOpenTaskDetailEvent}>{task[column.key]}</span>
+                {/if}
+            </span>    
+        {/if}
+    {/each}
 </li>
 
 <style>
-    .task{
-        display: flex;
-        align-items: center;
-        margin: 0.5em 0;
-        background-color: #ffffff1a;
-        padding: 10px;
-        border-radius: 3px;
-        color: #ffffff5c;
-        width: 80%;
-        cursor: pointer;
+
+    .columns{
+        width: 100%;
+        list-style: none;
     }
 
-    input[type=checkbox]{
-        width: 20px;
-        height: 20px;
-        margin: 0;
-        padding: 0;
-        border: 2px solid var(--secondary-color);
+    .column{
+        padding: 0.5rem;
+        height: 40px;
     }
 
-    input[type=checkbox]:checked + .task-label {
-        color: #ffffff5c;
-        text-decoration: line-through;
-    }
-
-    .task-label{
-        padding-left: 1em;
-        font-family: normal;
-        max-width: 85%;
-        overflow-wrap: break-word;
-        cursor: pointer;
-    }
-
-    .data-container{
-        width: 90%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    .action-container{
-        width: 10%;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-    }
 
 </style>
