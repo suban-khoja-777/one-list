@@ -187,7 +187,7 @@
 <style>
 
     .logo {
-        width: 4.8em;
+        width: 8em;
     }
 
     .columns{
