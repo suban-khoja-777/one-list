@@ -17,8 +17,9 @@
   *{
 	  font-family : normal;
 	  font-size: 16px;
-	  --primary-color : #1c1d1f;
-	  --secondary-color : #f48668;
+	  --primary-color : #39414d;
+	  --secondary-color : #d1e4dd;
+	  --dark-color : #108F64;
   }
   
   /* Element Level Styles - Start */
@@ -26,4 +27,141 @@
 body {
 	margin:0;
 	font-family : normal;
+	background-color: var(--secondary-color);
+}
+
+/** Utility Classes **/
+
+.flex{
+	display: flex;
+}
+
+.flex-column{
+	flex-direction: column;
+}
+
+.flex-row{
+	flex-direction: row;
+}
+
+.absolute{
+	position: absolute;
+}
+
+.relative{
+	position: relative;
+}
+
+.fixed{
+	position : fixed ;
+}
+
+.text-primary{
+	color : var(--primary-color);
+}
+
+.text-white{
+	color: white;
+}
+
+.text-light{
+	font-weight: 300;
+}
+
+.text-bold{
+	font-weight: 600;
+}
+
+.text-boldest{
+	font-weight: 900;
+}
+
+.justify-space-between{
+	justify-content: space-between;
+}
+
+.justify-space-around{
+	justify-content: space-around;
+}
+
+.align-center{
+	align-items: center;
+}
+
+.justify-center{
+	justify-content: center;
+}
+
+.grow{
+	flex-grow: 1;
+}
+
+.border-box{
+	box-sizing: border-box;
+}
+
+.text-underline{
+	text-decoration: underline;
+}
+
+.text-center{
+	text-align: center;
+}
+
+.justify-start{
+	justify-content: flex-start;
+}
+
+.justify-end{
+	justify-content: flex-end;
+}
+
+.bg-white{
+	background-color: white;
+}
+
+.bg-transparent{
+	background-color: transparent;
+}
+
+.bg-secondary{
+	background-color: var(--secondary-color);
+}
+
+.border-primary{
+	border : 2px solid  var(--primary-color);
+}
+
+.bg-dark{
+	background-color: var(--dark-color);
+}
+
+.border-bottom-primary{
+	border-bottom : 2px solid  var(--primary-color);
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+
+.option{
+	padding: 0.5rem;
+	outline: none;
+}
+
+.task_name{
+	width: 60%;
+}
+
+.task_start_date,.task_end_date{
+	width: max-content;
+}
+
+.task_status{
+	width: 10%;
+	outline: none;
+	border-top: none;
+	border-left: none;
+	border-right: none;
 }
