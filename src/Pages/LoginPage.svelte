@@ -110,7 +110,7 @@
                 <!-- <div class="line"></div> -->
                 <div class="form form-right flex justify-center flex-column bg-white">
                     <span class="app-name flex align-center justify-center text-bold text-primary">
-                        onelist
+                        <img class="logo" src="./logo.svg" alt="oneList"/>
                     </span>
                     <br/>
                     <Input name="email" type="email" label="Email" hasLabel onChange={handleChange}/>
