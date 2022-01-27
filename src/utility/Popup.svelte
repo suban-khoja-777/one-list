@@ -6,11 +6,13 @@
     export let header;
     export let closeLabel = "Close";
     export let showClose = true;
-    export let OnClose = fireClosePopupEvent;
+    
 
     const fireClosePopupEvent = () => {
         fireEvent(EVENTS.CLOSE_POPUP,{});
     }
+    
+    export let OnClose = fireClosePopupEvent;
 
 </script>
 
