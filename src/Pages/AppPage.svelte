@@ -5,7 +5,6 @@
     import Input from "../utility/Input.svelte";
     import {registerListener , EVENTS, fireEvent} from '../EventManager';
     import Button from "../utility/Button.svelte";
-    import Popup from "../utility/Popup.svelte";
     import Task from "../Task.svelte";
     import { columns } from "../constants";
     let store = [];
@@ -27,7 +26,6 @@
         registerListener(EVENTS.DELETE_TASK,processDeleteTask);
         registerListener(EVENTS.OPEN_TASK_DETAIL,processOpenTaskDetail);
         registerListener(EVENTS.CLOSE_POPUP,processCloseTaskDetail);
-
 
         fireEvent(EVENTS.SHOW_SPINNER,{});
 
@@ -62,6 +60,7 @@
 
     const processDeleteTask = () => {
         deleteTask(AUTH.currentUser.uid,selected_task.task_id);
+
         store = store.filter(task => task.task_id !== selected_task.task_id);
         processCloseTaskDetail();
     }
@@ -110,6 +109,7 @@
 
     const processOpenTaskDetail = (task_id) => {
         selected_task = store.filter(task => task.task_id === task_id)[0];
+
     }
 
     const processCloseTaskDetail = () => {
@@ -136,7 +136,7 @@
 </script>
 
 <div class="app-container flex align-center flex-column">
-    <header class="flex align-center justify-center">
+    <header class="flex border-box align-center justify-center">
         <div class="logo-container text-center">
             <img class="logo" src="./logo.svg" alt="onelist"/>
         </div>
@@ -152,10 +152,10 @@
     </header>
     {#if store && store.length}
         <div class="task-container flex justify-start align-center grow flex-column">
-            <li class="columns flex justify-space-between align-center bg-dark text-white text-bold">
+            <li class="columns flex justify-space-between align-center text-white text-bold">
                 {#each columns as column}
                     {#if column.show_in_list}
-                        <span class="column flex justify-center grow border-box text-bold {column.key}">{column.label}</span>    
+                        <span class="column flex justify-center grow border-box text-bold {column.key} { column.show_header ? 'bg-primary' : ''}">{ column.show_header ? column.label : ''}</span>    
                     {/if}
                 {/each}
             </li>
@@ -167,21 +167,26 @@
 </div>
 
 {#if selected_task}
-    <Popup header={selected_task.task_name} data={selected_task}>
-        <br/>
-        <br/>
-        {#each columns as column}
-            {#if column.show_in_detail}
-                <Input width_class="width-full" hasLabel label={column.label} type={column.field_type} onChange={handleTaskChange} value={selected_task[column.key]} data_field={column.key}/>
-                <br/>
-                <br/>  
-            {/if}
-        {/each}
-        <Button onClick={saveTaskTitleAndNote} label="Save" type="secondary"/>
-        <div class="flex align-center justify-center">
-            <Button onClick={processDeleteTask} label="Delete" type="link"/>
-        </div>        
-    </Popup>
+    <div class="bg-drop fixed outsider bg-transparent" on:click={processCloseTaskDetail}></div>
+    <div class="fixed side-popup {selected_task ? 'side-popup-show' : ''}">
+        <div class="modal bg-white absolute border-primary">
+            <div class="modal-content relative">
+                <div class="modal-header flex justify-space-between text-primary">
+                    <span class="header text-bold text-primary">{selected_task.task_name}</span>
+                    <Button onClick={processDeleteTask} label="Delete" type="link"/>
+                </div>    
+                {#each columns as column}
+                    {#if column.show_in_detail}
+                        <br/>
+                        <Input width_class="width-full" hasLabel label={column.label} type={column.field_type} onChange={handleTaskChange} value={selected_task[column.key]} data_field={column.key}/>
+                        <br/>  
+                    {/if}
+                {/each}
+                <Button onClick={saveTaskTitleAndNote} label="Save" type="secondary"/>
+                <Button onClick={processCloseTaskDetail} label="Close" type="primary"/>
+            </div>
+        </div>
+    </div>
 {/if}
 
 <style>
@@ -243,11 +248,52 @@
 
     header{
         width: 100vw;
-        padding: 1em 0;
+        padding: 1em;
     }
 
     .task-note{
         width: 100%;
     }
+
+    .side-popup{
+        top: 0;
+        width: 50%;
+        left: 0%;
+        bottom: 0;
+        height: 100%;
+        animation-duration: 1s;
+        animation-name: slidein;
+        z-index: 9
+    }
+
+    .outsider{
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right : 0;
+        z-index: 5;
+    }
+
+    @keyframes slidein {
+        from {
+            left: -50%;
+        }
+
+        to {
+            left: 0%;
+        }
+    }
+
+    .modal{
+        width: 100%;
+        height: 100%;
+        padding : 1rem 3rem 1rem 2rem;
+    }
+
+    .header{
+        font-size: 2rem;
+    }
+
+    
 
 </style>

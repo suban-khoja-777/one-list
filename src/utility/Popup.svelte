@@ -17,7 +17,7 @@
 </script>
 
 <div class="modal-container fixed bg-transparent">
-    <div class="modal bg-secondary absolute border-primary">
+    <div class="modal bg-white absolute border-primary">
         <div class="modal-content relative">
             <div class="modal-header flex justify-space-between text-primary">
                 {#if header}

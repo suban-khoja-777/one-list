@@ -27,7 +27,7 @@
 body {
 	margin:0;
 	font-family : normal;
-	background-color: var(--secondary-color);
+	background-color: white;
 }
 
 /** Utility Classes **/
@@ -88,6 +88,11 @@ body {
 	align-items: center;
 }
 
+.align-stretch{
+	align-items: stretch;
+}
+
+
 .justify-center{
 	justify-content: center;
 }
@@ -128,6 +133,10 @@ body {
 	background-color: var(--secondary-color);
 }
 
+.bg-primary{
+	background-color: var(--primary-color);
+}
+
 .border-primary{
 	border : 2px solid  var(--primary-color);
 }
@@ -165,3 +174,22 @@ body {
 	border-left: none;
 	border-right: none;
 }
+
+/** Status Classes Start **/
+
+.Not-Started{
+	background-color: #c4c4c4;
+	color: var(--primary-color);
+}
+
+.In-Progress{
+	background-color: #fec06e;
+	color: white
+}
+
+.Completed{
+	background-color: #00c875;
+	color: white;
+}
+
+/** Status Classes End **/

@@ -20,9 +20,9 @@
 {/if}
 
 {#if type === 'select'}
-    <select class="column flex grow border-bottom-primary text-primary bg-secondary text-center pointer border-box justify-center status-column" {value} {name} on:change={onChange} data-field={data_field}>
+    <select class="column flex grow border-bottom-primary text-primary {classes} border-box text-center pointer border-box justify-center status-column" {value} {name} on:change={onChange} data-field={data_field}>
         {#each options as status}
-            <option value={status} class="option bg-transparent">{status}</option>
+            <option value={status} class="option bg-white text-primary">{status}</option>
         {/each}
     </select>
     {:else if type === "text-long"}
@@ -68,6 +68,10 @@
     select{
         border: none;
         outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        text-indent: 1px;
+        text-overflow: '';
     }
 
 </style>

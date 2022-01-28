@@ -23,8 +23,9 @@
     }
 
     button[data-type="secondary"]{
-        background-color: var(--secondary-color);
-        border : 2px solid var(--primary-color);
+        background-color: var(--dark-color);
+        border : 2px solid var(--dark-color);
+        color: white;
     }
 
     button[data-type="link"]{

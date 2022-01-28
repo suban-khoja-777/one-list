@@ -60,7 +60,7 @@
     }
 
     .logo {
-        width: 3.8em;
+        width: 8em;
         margin: 0 5px;
     }
 
@@ -99,18 +99,18 @@
 
 </style>
 
-<div class="flex flex-column container bg-secondary">
+<div class="flex flex-column container bg-white">
     
     {#if showLogin}
         <div class="form-container flex justify-center flex-row align-center login-form">
             <div class="sub-container flex justify-center flex-row bg-white">
-                <div class="form bg-dark flex justify-center bg-white">
+                <div class="form flex justify-center bg-dark">
                     <img class="form" src="./login-form.svg" alt="oneList"/>
                 </div>
                 <!-- <div class="line"></div> -->
                 <div class="form form-right flex justify-center flex-column bg-white">
                     <span class="app-name flex align-center justify-center text-bold text-primary">
-                        onelist
+                        <img class="logo" src="./logo.svg" alt="oneList"/>
                     </span>
                     <br/>
                     <Input name="email" type="email" label="Email" hasLabel onChange={handleChange}/>
@@ -125,7 +125,7 @@
             </div>
         </div>
         {:else}
-        <header class="app-header flex justify-space-between align-center bg-secondary">
+        <header class="app-header flex justify-space-between align-center bg-transparent">
             <span class="app-name flex align-center text-bold text-primary">
                 <img class="logo" src="./logo.svg" alt="oneList"/>
             </span>
@@ -137,13 +137,15 @@
             <div class="flex justify-center flex-column align-center tagline-container">
                 <h1 class="tagline">Manage your task better with </h1>
                 <h1 class="tagline highlight text-underline">onelist</h1>
+                <br/>
+                <Button onClick={showLoginPage} label="Login" type="secondary"/>
             </div>
             <div class="flex justify-center flex-column align-center tagline-container">
                 <img class="home" src="./login.svg" alt="oneList"/>    
             </div>
         </div>
 
-        <footer class="app-header flex justify-end align-center bg-secondary">
+        <footer class="app-header flex justify-end align-center bg-transparent">
             <span class="dev-name text-bold highlight text-underline">Suban Khoja</span>
         </footer>
     {/if}

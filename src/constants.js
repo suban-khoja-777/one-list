@@ -23,6 +23,7 @@ const columns = [
         key : "task_name",
         show_in_list : true,
         show_in_detail : true,
+        show_header : false,
         allow_inline_edit : false,
         field_type : "text"
     },
@@ -31,6 +32,7 @@ const columns = [
         key : "task_start_date",
         show_in_list : true,
         show_in_detail : false,
+        show_header : true,
         allow_inline_edit : true,
         field_type : "date"
     },
@@ -39,6 +41,7 @@ const columns = [
         key : "task_end_date",
         show_in_list : true,
         show_in_detail : false,
+        show_header : true,
         allow_inline_edit : true,
         field_type : "date"
     },
@@ -47,6 +50,7 @@ const columns = [
         key : "task_status",
         show_in_list : true,
         show_in_detail : false,
+        show_header : true,
         allow_inline_edit : true,
         field_type : "select"
     },
@@ -55,10 +59,17 @@ const columns = [
         key : "task_note",
         show_in_list : false,
         show_in_detail : true,
+        show_header : false,
         allow_inline_edit : false,
         field_type : "text-long"
     }
 ]
+
+
+const getStatusClass = (_status) => {
+    if(!_status) return '';
+    return _status.replace(' ','-');
+}
 
 
 Object.freeze(API);
@@ -68,5 +79,8 @@ Object.freeze(columns);
 export {
     API,
     statuses,
-    columns
+    columns,
+    getStatusClass
 };
+
+
