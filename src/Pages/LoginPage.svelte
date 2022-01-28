@@ -129,14 +129,14 @@
             <span class="app-name flex align-center text-bold text-primary">
                 <img class="logo" src="./logo.svg" alt="oneList"/>
             </span>
-            <Button onClick={showLoginPage} label="Login" type="link"/>
-            
         </header>
         
         <div class="flex justify-center flex-row align-center grow">
             <div class="flex justify-center flex-column align-center tagline-container">
                 <h1 class="tagline">Manage your task better with </h1>
                 <h1 class="tagline highlight text-underline">onelist</h1>
+                <br/>
+                <Button onClick={showLoginPage} label="Login" type="secondary"/>
             </div>
             <div class="flex justify-center flex-column align-center tagline-container">
                 <img class="home" src="./login.svg" alt="oneList"/>    
