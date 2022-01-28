@@ -13,7 +13,7 @@
     }
 
     const sendOpenTaskDetailEvent = () => {
-        fireEvent(EVENTS.OPEN_TASK_DETAIL,updated_task.task_id);
+        fireEvent(EVENTS.OPEN_TASK_DETAIL,task.task_id);
     }
     
 </script>
