@@ -52,6 +52,12 @@
 
     .app-header{
         padding: 1.5em 1em;
+        background-color: #f7f7f7;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .app-footer{
+        padding: 1.5em 1em;
     }
 
     .app-name {
@@ -125,12 +131,10 @@
             </div>
         </div>
         {:else}
-        <header class="app-header flex justify-space-between align-center bg-transparent">
+        <header class="app-header flex justify-space-between align-center">
             <span class="app-name flex align-center text-bold text-primary">
                 <img class="logo" src="./logo.svg" alt="oneList"/>
             </span>
-            <Button onClick={showLoginPage} label="Login" type="link"/>
-            
         </header>
         
         <div class="flex justify-center flex-row align-center grow">
@@ -145,7 +149,7 @@
             </div>
         </div>
 
-        <footer class="app-header flex justify-end align-center bg-transparent">
+        <footer class="app-footer flex justify-end align-center bg-transparent">
             <span class="dev-name text-bold highlight text-underline">Suban Khoja</span>
         </footer>
     {/if}
