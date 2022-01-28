@@ -136,7 +136,7 @@
 </script>
 
 <div class="app-container flex align-center flex-column">
-    <header class="flex align-center justify-center">
+    <header class="flex border-box align-center justify-center">
         <div class="logo-container text-center">
             <img class="logo" src="./logo.svg" alt="onelist"/>
         </div>
@@ -243,7 +243,7 @@
 
     header{
         width: 100vw;
-        padding: 1em 0;
+        padding: 1em;
     }
 
     .task-note{
