@@ -16,6 +16,10 @@
     const sendOpenTaskDetailEvent = () => {
         fireEvent(EVENTS.OPEN_TASK_DETAIL,task.task_id);
     }
+
+    const sendDeleteTaskDetailEvent = () => {
+        fireEvent(EVENTS.DELETE_TASK,task.task_id);
+    }
     
 </script>
 
@@ -32,8 +36,13 @@
                     {:else}
                     
                     <span>{task[column.key]}</span>
-                    <span class="row-action">
-                        <Button onClick={sendOpenTaskDetailEvent} label="Edit" type="link"/>
+                    <span class="row-actions">
+                        <span class="action">
+                            <Button onClick={sendOpenTaskDetailEvent} label="Edit" type="link"/>
+                        </span>
+                        <span class="action">
+                            <Button onClick={sendDeleteTaskDetailEvent} label="Delete" type="link"/>
+                        </span>
                     </span>
                 {/if}
             </span>    
@@ -59,16 +68,20 @@
         padding: 0.5rem;
     }
 
-    .row-action{
-        padding-left: 2rem;
+    .row-actions{
+        padding: 0 1rem;
         display: none;
     }
 
-    li.columns:hover{
-        background-color : #cce5ff;
+    .row-actions > .action{
+        padding-left:1rem;
     }
 
-    li.columns:hover .row-action{
+    li.columns:hover{
+        background-color : #bcf9e4;
+    }
+
+    li.columns:hover .row-actions{
         display: inherit;
     }
 

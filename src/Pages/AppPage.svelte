@@ -58,11 +58,9 @@
         })
     });
 
-    const processDeleteTask = () => {
-        deleteTask(AUTH.currentUser.uid,selected_task.task_id);
-
-        store = store.filter(task => task.task_id !== selected_task.task_id);
-        processCloseTaskDetail();
+    const processDeleteTask = (task_id) => {
+        deleteTask(AUTH.currentUser.uid,task_id);
+        store = store.filter(task => task.task_id !== task_id);
     }
 
     const processUpdateTask = (data) => {
@@ -173,7 +171,6 @@
             <div class="modal-content relative">
                 <div class="modal-header flex justify-space-between text-primary">
                     <span class="header text-bold text-primary">{selected_task.task_name}</span>
-                    <Button onClick={processDeleteTask} label="Delete" type="link"/>
                 </div>    
                 {#each columns as column}
                     {#if column.show_in_detail}
