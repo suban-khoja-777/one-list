@@ -174,6 +174,7 @@
 
 <div class="app-container flex align-center flex-column">
     <header class="flex align-center justify-center border-box">
+
         <div class="logo-container text-center">
             <img class="logo" src="./logo.svg" alt="onelist"/>
         </div>
