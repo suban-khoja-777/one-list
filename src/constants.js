@@ -58,7 +58,12 @@ const columns = [
         allow_inline_edit : false,
         field_type : "text-long"
     }
-]
+];
+
+const getStatusClass = (_status) => {
+    if(!_status) return "";
+    return _status.replace(' ','-');
+}
 
 
 Object.freeze(API);
@@ -68,5 +73,6 @@ Object.freeze(columns);
 export {
     API,
     statuses,
-    columns
+    columns,
+    getStatusClass
 };

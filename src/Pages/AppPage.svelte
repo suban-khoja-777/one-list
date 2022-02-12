@@ -7,14 +7,24 @@
     import Button from "../utility/Button.svelte";
     import Popup from "../utility/Popup.svelte";
     import Task from "../Task.svelte";
-    import { columns } from "../constants";
+    import { columns , statuses } from "../constants";
     let store = [];
-
+    let filtered_tasks = [];
     let new_task_name;
     let selected_task;
 
+    let showFilter = false;
+    let hasFilterApplied = false;
+    let filter = {
+        status : ""
+    }
+
     const handleChange = (e) => {
         new_task_name = e.target.value;
+    }
+
+    const handleFilterChange = (e) => {
+        filter.status = e.target.value;
     }
 
     const handleTaskChange = (e) => {
@@ -26,7 +36,7 @@
         registerListener(EVENTS.UPDATE_TASK,processUpdateTask);
         registerListener(EVENTS.DELETE_TASK,processDeleteTask);
         registerListener(EVENTS.OPEN_TASK_DETAIL,processOpenTaskDetail);
-        registerListener(EVENTS.CLOSE_POPUP,processCloseTaskDetail);
+        registerListener(EVENTS.CLOSE_POPUP,processClosePopup);
 
 
         fireEvent(EVENTS.SHOW_SPINNER,{});
@@ -50,6 +60,8 @@
                         delete store[i].id;
                     }
                 }
+                filtered_tasks = store;
+                filtered_tasks = filtered_tasks;
                 fireEvent(EVENTS.HIDE_SPINNER,{});
             }else{
                 fireEvent(EVENTS.HIDE_SPINNER,{});
@@ -63,7 +75,9 @@
     const processDeleteTask = () => {
         deleteTask(AUTH.currentUser.uid,selected_task.task_id);
         store = store.filter(task => task.task_id !== selected_task.task_id);
-        processCloseTaskDetail();
+        filtered_tasks = store;
+        filtered_tasks = filtered_tasks;
+        processClosePopup('EDIT_TASK');
     }
 
     const processUpdateTask = (data) => {
@@ -100,6 +114,8 @@
                 });
                 new_task_name = "";
                 store = store;
+                filtered_tasks = store;
+                filtered_tasks = filtered_tasks;
                 fireEvent(EVENTS.HIDE_SPINNER,{});
             })
             .catch(err => {
@@ -112,8 +128,9 @@
         selected_task = store.filter(task => task.task_id === task_id)[0];
     }
 
-    const processCloseTaskDetail = () => {
-        selected_task = null;
+    const processClosePopup = (name) => {
+        if(name === "EDIT_TASK") selected_task = null;
+        else if (name === "FILTER_TASK") showFilter = false;
     }
 
     const saveTaskTitleAndNote = () => {
@@ -133,16 +150,41 @@
         });
     }
 
+    const toggleFilterPopup = () => {
+        if(!hasFilterApplied){
+            showFilter = !showFilter;
+        }else{
+            filtered_tasks = store;
+            filtered_tasks = filtered_tasks;
+            hasFilterApplied = false;
+            filter.status = "";
+        }
+    }
+
+    const applyFilter = () => {
+        if(filter.status){
+            hasFilterApplied = true;
+            filtered_tasks = store.filter(task => task.task_status === filter.status);
+            filtered_tasks = filtered_tasks;
+            processClosePopup("FILTER_TASK");
+        }
+    }
+
 </script>
 
 <div class="app-container flex align-center flex-column">
-    <header class="flex align-center justify-center">
+    <header class="flex align-center justify-center border-box">
         <div class="logo-container text-center">
             <img class="logo" src="./logo.svg" alt="onelist"/>
         </div>
         
         <div class="input-container flex justify-center">
-            <Input width_class="width-half" name="search" type="text" placeholder="Type your task here. Press enter to create" onChange={handleChange} onKeyUp={handleCreateTask} value={new_task_name}/>
+            {#if store && store.length}
+                {#if !hasFilterApplied}
+                    <Input width_class="width-half" name="search" type="text" placeholder="Type your task here. Press enter to create" onChange={handleChange} onKeyUp={handleCreateTask} value={new_task_name}/>&nbsp;&nbsp;
+                {/if}
+                <Button onClick={toggleFilterPopup} label={hasFilterApplied ? 'clear filter' : 'filter'} type="link"/>
+            {/if}
         </div>
 
         <div class="action-container text-center">
@@ -150,7 +192,7 @@
         </div>
 
     </header>
-    {#if store && store.length}
+    {#if filtered_tasks && filtered_tasks.length}
         <div class="task-container flex justify-start align-center grow flex-column">
             <li class="columns flex justify-space-between align-center bg-dark text-white text-bold">
                 {#each columns as column}
@@ -159,7 +201,7 @@
                     {/if}
                 {/each}
             </li>
-            {#each store as task}
+            {#each filtered_tasks as task}
                 <Task {task} />    
             {/each}
         </div>
@@ -167,7 +209,7 @@
 </div>
 
 {#if selected_task}
-    <Popup header={selected_task.task_name} data={selected_task}>
+    <Popup header={selected_task.task_name} data={selected_task} name="EDIT_TASK">
         <br/>
         <br/>
         {#each columns as column}
@@ -184,10 +226,21 @@
     </Popup>
 {/if}
 
+{#if showFilter}
+    <Popup header="Add Filter" name="FILTER_TASK">
+        <br/>
+        <Input width_class="width-half" type="select" classes="bg-transparent filter-input" value={filter.status} onChange={handleFilterChange} data_field="status" options={statuses}/>
+        <br/>
+        <div class="flex">    
+            <Button onClick={applyFilter} label="Apply" type="primary"/>&nbsp;&nbsp;&nbsp;
+        </div>
+    </Popup>
+{/if}
+
 <style>
 
     .logo {
-        width: 8em;
+        width: 7em;
     }
 
     .columns{
@@ -243,7 +296,7 @@
 
     header{
         width: 100vw;
-        padding: 1em 0;
+        padding: 1em;
     }
 
     .task-note{

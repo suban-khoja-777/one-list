@@ -1,19 +1,17 @@
 <script>
 
     import { fireEvent, EVENTS } from "./EventManager";
-    import { statuses , columns } from "./constants";
+    import { statuses , columns ,getStatusClass } from "./constants";
     import Input from "./utility/Input.svelte";
     export let task;
     
-    let updated_task = {...task};
-
     const handleChange = (e) => {
-        updated_task[e.target.dataset.field] = e.target.value;
-        fireEvent(EVENTS.UPDATE_TASK,updated_task);
+        task[e.target.dataset.field] = e.target.value;
+        fireEvent(EVENTS.UPDATE_TASK,task);
     }
 
     const sendOpenTaskDetailEvent = () => {
-        fireEvent(EVENTS.OPEN_TASK_DETAIL,updated_task.task_id);
+        fireEvent(EVENTS.OPEN_TASK_DETAIL,task.task_id);
     }
     
 </script>
@@ -26,7 +24,7 @@
                     {#if column.field_type !== 'select'}
                         <Input type={column.field_type} classes="bg-transparent" value={task[column.key]} onChange={handleChange} data_field={column.key} />
                         {:else}
-                        <Input type={column.field_type} classes="bg-transparent" value={task[column.key]} onChange={handleChange} data_field={column.key} options={statuses}/>
+                        <Input type={column.field_type} classes="bg-transparent {getStatusClass(task[column.key])}" value={task[column.key]} onChange={handleChange} data_field={column.key} options={statuses}/>
                     {/if}
                     {:else}
                     <span on:click={sendOpenTaskDetailEvent}>{task[column.key]}</span>

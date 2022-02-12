@@ -144,7 +144,6 @@ body {
 	cursor: pointer;
 }
 
-
 .option{
 	padding: 0.5rem;
 	outline: none;
@@ -164,4 +163,19 @@ body {
 	border-top: none;
 	border-left: none;
 	border-right: none;
+}
+
+.Completed{
+	color: var(--dark-color);
+	font-weight: 600;
+}
+
+.In-Progress{
+	color: #3595f6;
+	font-weight: 600;
+}
+
+.Not-Started{
+	color: #d83a52;
+	font-weight: 600;
 }

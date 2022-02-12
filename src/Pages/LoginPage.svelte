@@ -9,16 +9,7 @@
         name:""
     }
 
-    let showLogin = false;
-
-    const showLoginPage = () => {
-        showLogin = true;
-    }
-
-    const hideLoginPage = () => {
-        showLogin = false;
-    }
-
+    
     const handleChange = (e) => {
         user[e.target.name] = e.target.value;
     }
@@ -50,8 +41,9 @@
         height: 100vh;
     }
 
-    .app-header{
+    .app-footer{
         padding: 1.5em 1em;
+        width: 100%;
     }
 
     .app-name {
@@ -60,7 +52,7 @@
     }
 
     .logo {
-        width: 3.8em;
+        width: 8em;
         margin: 0 5px;
     }
 
@@ -68,22 +60,13 @@
         height: 100vh;
     }
 
-    .tagline{
-        font-size: 2.5rem;
-        margin: 0;
-    }
-
     .form {
         padding: 3rem;
         width: 25%;
     }
 
-    .highlight{
-        color: var(--dark-color);
-    }
-
     .home{
-        width: 50%;
+        width: 100%;
         height: 50%;
     }
 
@@ -93,24 +76,48 @@
     }
 
     .sub-container{
-        box-shadow: rgb(0 0 0 / 70%) 0 25px 50px -15px !important;
-        width: 70%;
+        width: 100%;
+    }
+
+    .left{
+        width: 75%;
+    }
+
+    .right{
+        width : 25%;
     }
 
 </style>
 
-<div class="flex flex-column container bg-secondary">
-    
-    {#if showLogin}
-        <div class="form-container flex justify-center flex-row align-center login-form">
-            <div class="sub-container flex justify-center flex-row bg-white">
-                <div class="form bg-dark flex justify-center bg-white">
-                    <img class="form" src="./login-form.svg" alt="oneList"/>
-                </div>
+<div class="flex flex-row container bg-secondary">
+
+    <div class="left flex flex-column justify-center grow">
+        <!-- <header class="app-header flex justify-space-between align-center bg-secondary">
+             <span class="app-name flex align-center text-bold text-primary">
+                <img class="logo" src="./logo.svg" alt="oneList"/>
+            </span> 
+        </header> -->
+        
+        <div class="flex justify-center flex-row align-center grow">
+            <!-- <div class="flex justify-center flex-column align-center tagline-container">
+                <h1 class="tagline">Manage your task better with </h1>
+                <h1 class="tagline highlight text-underline">onelist</h1>
+            </div> -->
+            <div class="flex justify-center flex-column align-center tagline-container">
+                <img class="home" src="./home.png" alt="onelist"/>    
+            </div>
+        </div>
+
+        
+    </div>
+
+    <div class="right bg-white">
+        <div class="form-container flex justify-center flex-column align-center login-form">
+            <div class="sub-container flex justify-center grow">
                 <!-- <div class="line"></div> -->
-                <div class="form form-right flex justify-center flex-column bg-white">
+                <div class="form border-box form-right flex justify-center flex-column bg-white">
                     <span class="app-name flex align-center justify-center text-bold text-primary">
-                        onelist
+                        <img class="logo" src="./logo.svg" alt="oneList"/>
                     </span>
                     <br/>
                     <Input name="email" type="email" label="Email" hasLabel onChange={handleChange}/>
@@ -118,34 +125,13 @@
                     <Input name="password" type="password" label="Password" hasLabel onChange={handleChange}/>
                     <br/>
                     <Button onClick={onSignIn} label="Login" type="primary"/>
-                    <br/>
-                    <br/>
-                    <Button onClick={hideLoginPage} label="Return to home" type="link"/>
                 </div>
             </div>
+            <footer class="app-footer border-box bg-dark flex justify-center alin-center">
+                <span class="dev-name text-white">Made with ❤️ by <span class="text-bold text-underline">Suban Khoja.</span></span>
+            </footer>
         </div>
-        {:else}
-        <header class="app-header flex justify-space-between align-center bg-secondary">
-            <span class="app-name flex align-center text-bold text-primary">
-                <img class="logo" src="./logo.svg" alt="oneList"/>
-            </span>
-            <Button onClick={showLoginPage} label="Login" type="link"/>
-            
-        </header>
         
-        <div class="flex justify-center flex-row align-center grow">
-            <div class="flex justify-center flex-column align-center tagline-container">
-                <h1 class="tagline">Manage your task better with </h1>
-                <h1 class="tagline highlight text-underline">onelist</h1>
-            </div>
-            <div class="flex justify-center flex-column align-center tagline-container">
-                <img class="home" src="./login.svg" alt="oneList"/>    
-            </div>
-        </div>
-
-        <footer class="app-header flex justify-end align-center bg-secondary">
-            <span class="dev-name text-bold highlight text-underline">Suban Khoja</span>
-        </footer>
-    {/if}
+    </div>
     
 </div>
