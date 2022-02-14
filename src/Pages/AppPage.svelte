@@ -195,10 +195,10 @@
     </header>
     {#if filtered_tasks && filtered_tasks.length}
         <div class="task-container flex justify-start align-center grow flex-column">
-            <li class="columns flex justify-space-between align-center bg-dark text-white text-bold">
+            <li class="columns flex justify-space-between align-center">
                 {#each columns as column}
                     {#if column.show_in_list}
-                        <span class="column flex justify-center grow border-box text-bold {column.key}">{column.label}</span>    
+                        <span class="column flex {column.key === "task_name" ? "justify-start" : "justify-center"} grow border-box {column.key}">{column.label}</span>    
                     {/if}
                 {/each}
             </li>
@@ -220,7 +220,7 @@
                 <br/>  
             {/if}
         {/each}
-        <Button onClick={saveTaskTitleAndNote} label="Save" type="secondary"/>
+        <Button onClick={saveTaskTitleAndNote} label="Save" type="primary"/>
         <div class="flex align-center justify-center">
             <Button onClick={processDeleteTask} label="Delete" type="link"/>
         </div>        
@@ -247,6 +247,11 @@
     .columns{
         width: 100%;
         list-style: none;
+        height: 37px;
+        border-bottom: 1px solid rgb(216, 222, 228);
+        border-top: 1px solid rgb(216, 222, 228);
+        color : rgb(216, 222, 228);
+        background-color: #000;;
     }
 
     .column{

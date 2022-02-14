@@ -42,8 +42,10 @@
     }
 
     .app-footer{
-        padding: 1.5em 1em;
+        padding: .5em;
         width: 100%;
+        background-color: rgb(216, 222, 228);
+        color : black;
     }
 
     .app-name {
@@ -66,7 +68,7 @@
     }
 
     .home{
-        width: 100%;
+        width: 75%;
         height: 50%;
     }
 
@@ -85,37 +87,26 @@
 
     .right{
         width : 25%;
+        background-color : rgb(216, 222, 228);
     }
 
 </style>
 
-<div class="flex flex-row container bg-secondary">
+<div class="flex flex-row container">
 
-    <div class="left flex flex-column justify-center grow">
-        <!-- <header class="app-header flex justify-space-between align-center bg-secondary">
-             <span class="app-name flex align-center text-bold text-primary">
-                <img class="logo" src="./logo.svg" alt="oneList"/>
-            </span> 
-        </header> -->
-        
+    <div class="left flex flex-column justify-center grow bg-white">
         <div class="flex justify-center flex-row align-center grow">
-            <!-- <div class="flex justify-center flex-column align-center tagline-container">
-                <h1 class="tagline">Manage your task better with </h1>
-                <h1 class="tagline highlight text-underline">onelist</h1>
-            </div> -->
             <div class="flex justify-center flex-column align-center tagline-container">
                 <img class="home" src="./home.png" alt="onelist"/>    
             </div>
         </div>
-
-        
     </div>
 
-    <div class="right bg-white">
+    <div class="right">
         <div class="form-container flex justify-center flex-column align-center login-form">
             <div class="sub-container flex justify-center grow">
                 <!-- <div class="line"></div> -->
-                <div class="form border-box form-right flex justify-center flex-column bg-white">
+                <div class="form border-box form-right flex justify-center flex-column">
                     <span class="app-name flex align-center justify-center text-bold text-primary">
                         <img class="logo" src="./logo.svg" alt="oneList"/>
                     </span>
@@ -127,8 +118,8 @@
                     <Button onClick={onSignIn} label="Login" type="primary"/>
                 </div>
             </div>
-            <footer class="app-footer border-box bg-dark flex justify-center alin-center">
-                <span class="dev-name text-white">Made with ❤️ by <span class="text-bold text-underline">Suban Khoja.</span></span>
+            <footer class="app-footer border-box flex justify-center align-center">
+                <span class="dev-name">Made with ❤️ by <span class="text-bold text-underline">Suban Khoja.</span></span>
             </footer>
         </div>
         

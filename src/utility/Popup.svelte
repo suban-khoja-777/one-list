@@ -59,7 +59,7 @@
     .modal{
         width: 40vw;
         height: auto;
-        background-color: var(--secondary-color);
+        background-color: white;
         z-index: 9;
         position: relative;
     }

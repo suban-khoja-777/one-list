@@ -27,7 +27,7 @@
 body {
 	margin:0;
 	font-family : normal;
-	background-color: var(--secondary-color);
+	background-color: #f6f8fa;
 }
 
 /** Utility Classes **/

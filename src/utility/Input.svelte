@@ -20,7 +20,7 @@
 {/if}
 
 {#if type === 'select'}
-    <select class="column flex grow border-bottom-primary text-primary bg-secondary text-center pointer border-box justify-center status-column {classes}" {value} {name} on:change={onChange} data-field={data_field}>
+    <select class="column flex grow border-bottom-primary text-center pointer border-box justify-center status-column {classes}" {value} {name} on:change={onChange} data-field={data_field}>
         {#each options as status}
             <option value={status} class="option bg-transparent">{status}</option>
         {/each}

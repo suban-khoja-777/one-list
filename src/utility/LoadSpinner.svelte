@@ -3,7 +3,7 @@
 </script>
 
 {#if show}
-    <div class="main-container flex align-center flex-column justify-center bg-secondary">
+    <div class="main-container flex align-center flex-column justify-center">
         <div class="flex align-center text-primary">
             <img class="logo" src="./logo.svg" alt="onelist"/>
         </div>

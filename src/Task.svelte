@@ -16,10 +16,10 @@
     
 </script>
 
-<li class="columns text-primary flex justify-space-between align-center border-box">
+<li class="columns flex justify-space-between align-center border-box">
     {#each columns as column}
         {#if column.show_in_list}
-            <span class="column flex {column.key === "task_name" ? "justify-start" : "justify-center"}  border-box text-bold pointer {column.key}">
+            <span class="column flex {column.key === "task_name" ? "justify-start" : "justify-center"}  border-box pointer {column.key}">
                 {#if column.allow_inline_edit}
                     {#if column.field_type !== 'select'}
                         <Input type={column.field_type} classes="bg-transparent" value={task[column.key]} onChange={handleChange} data_field={column.key} />
@@ -39,6 +39,9 @@
     .columns{
         width: 100%;
         list-style: none;
+        border-bottom: 1px solid rgb(216, 222, 228);
+        height: 37px;
+        color : #57606a;
     }
 
     .column{

@@ -19,7 +19,7 @@ const statuses = [
 
 const columns = [
     {
-        label : "Name",
+        label : "Title",
         key : "task_name",
         show_in_list : true,
         show_in_detail : true,
