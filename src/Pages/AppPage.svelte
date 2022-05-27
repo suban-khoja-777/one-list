@@ -180,12 +180,12 @@
         </div>
         
         <div class="input-container flex justify-center">
-            {#if store && store.length}
+<!--             {#if store && store.length} -->
                 {#if !hasFilterApplied}
                     <Input width_class="width-half" name="search" type="text" placeholder="Type your task here. Press enter to create" onChange={handleChange} onKeyUp={handleCreateTask} value={new_task_name}/>&nbsp;&nbsp;
                 {/if}
                 <Button onClick={toggleFilterPopup} label={hasFilterApplied ? 'clear filter' : 'filter'} type="link"/>
-            {/if}
+<!--             {/if} -->
         </div>
 
         <div class="action-container text-center">
